@@ -1,35 +1,62 @@
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 
 export class FormUtils {
-    static isValidField(form:FormGroup, fieldName: string): boolean | null {
-
+  static isValidField(form: FormGroup, fieldName: string): boolean | null {
     return form.controls[fieldName].errors && form.controls[fieldName].touched;
   }
 
-  static getFieldError(form:FormGroup, fieldName:string): string | null{
-    if(!form.controls[fieldName]) return null;
+  static getFieldError(form: FormGroup, fieldName: string): string | null {
+    if (!form.controls[fieldName]) return null;
 
-    const errors = form.controls[fieldName].errors ?? {}
+    const errors = form.controls[fieldName].errors ?? {};
 
-    console.log("Errores", errors);
+    for (const key of Object.keys(errors)) {
+      console.log('key', key);
 
-     for(const key of Object.keys(errors)){
-      console.log("key", key);
-
-      switch(key){
+      switch (key) {
         case 'required':
           return 'Este campo es requerido';
 
         case 'minlength':
-          return `Mínimo de ${errors['minlength'].requiredLength} caracteres`
+          return `Mínimo de ${errors['minlength'].requiredLength} caracteres`;
 
-          case 'min':
-          return `Valor mínimo de ${errors['min'].min}`
-
+        case 'min':
+          return `Valor mínimo de ${errors['min'].min}`;
       }
-     }
+    }
 
-     return null
+    return null;
   }
 
+  static isValidFieldInArray(formArray: FormArray, index: number) {
+    return (
+      formArray.controls[index].errors && formArray.controls[index].touched
+    );
+  }
+
+  static getFieldArrayError(
+    formArray: FormArray,
+    index: number,
+  ): string | null {
+    if (!formArray.controls[index]) return null;
+
+    const errors = formArray.controls[index].errors ?? {};
+
+    for (const key of Object.keys(errors)) {
+      console.log('key', key);
+
+      switch (key) {
+        case 'required':
+          return 'Este campo es requerido';
+
+        case 'minlength':
+          return `Mínimo de ${errors['minlength'].requiredLength} caracteres`;
+
+        case 'min':
+          return `Valor mínimo de ${errors['min'].min}`;
+      }
+    }
+
+    return null;
+  }
 }
