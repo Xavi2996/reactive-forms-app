@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FormUtils } from '../../../utils/form.util';
+import { FormUtils } from '../../utils/form.util';
 
 @Component({
   selector: 'app-dinamic-page',

@@ -1,19 +1,24 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FormUtils } from '../../../utils/form.util';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { FormUtils } from '../../utils/form.util';
 
 @Component({
   selector: 'app-basic-page',
   imports: [JsonPipe, ReactiveFormsModule],
   templateUrl: './basic-page.component.html',
-  styleUrl: './basic-page.component.css'
+  styleUrl: './basic-page.component.css',
 })
 export class BasicPageComponent {
-
   private fb = inject(FormBuilder);
 
-  formUtils = FormUtils
+  formUtils = FormUtils;
 
   myForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -57,19 +62,15 @@ export class BasicPageComponent {
   //    return null
   // }
 
-  onSave(){
-    if( this.myForm.invalid){
+  onSave() {
+    if (this.myForm.invalid) {
       this.myForm.markAllAsTouched();
     }
     console.log(this.myForm.value);
 
-    this.myForm.reset(
-      {
-        price:0,
-        inStorage:0
-      }
-    )
-
+    this.myForm.reset({
+      price: 0,
+      inStorage: 0,
+    });
   }
-
 }
