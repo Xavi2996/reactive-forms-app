@@ -1,4 +1,17 @@
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormGroup,
+  ValidationErrors,
+} from '@angular/forms';
+
+async function sleep() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 3000);
+  });
+}
 
 export class FormUtils {
   //expresiones regulares
@@ -31,6 +44,12 @@ export class FormUtils {
         case 'email':
           return `Correo con formato incorrecto`;
 
+        case 'emailTaken':
+          return `Correo ya registrado`;
+
+        case 'notStrider':
+          return `Nombre de usuario no permitido`;
+
         case 'pattern':
           if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
             return 'El correo electrónico no es permitido';
@@ -38,7 +57,7 @@ export class FormUtils {
           return 'Error de patrón contra expresión regular';
 
         default:
-          return 'error no mapeado';
+          return `Error de validación no controlado ${key}`;
       }
     }
 
@@ -84,5 +103,37 @@ export class FormUtils {
 
       return field1Value === field2Value ? null : { passwordsNotEqual: true };
     };
+  }
+
+  static async checkingServerResponse(
+    control: AbstractControl,
+  ): Promise<ValidationErrors | null> {
+    console.log('validando servidor');
+
+    await sleep();
+
+    const formValue = control.value;
+
+    console.log(formValue);
+
+    if (formValue === 'hola@mundo.com') {
+      return {
+        emailTaken: true,
+      };
+    }
+    return null;
+  }
+
+  static notStrider(control: AbstractControl): ValidationErrors | null {
+    const value: string = (control.value ?? '').trim().toLowerCase();
+    console.log(value);
+
+    if (value === 'strider') {
+      console.log('El nombre de usuario no puede ser "strider"');
+      return {
+        notStrider: true,
+      };
+    }
+    return null;
   }
 }

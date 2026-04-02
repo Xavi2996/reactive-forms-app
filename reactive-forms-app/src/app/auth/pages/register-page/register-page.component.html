@@ -51,7 +51,9 @@
             formControlName="username"
           />
           @if (formUtils.isValidField(myForm, "username")) {
-            <span class="form-text text-danger"> Username necesario </span>
+            <span class="form-text text-danger">
+              {{ formUtils.getFieldError(myForm, "username") }}
+            </span>
           }
         </div>
       </div>
@@ -122,3 +124,5 @@
 
 <h5>Confirmar</h5>
 <pre>{{ myForm.controls["password2"].value | json }}</pre>
+
+<pre>{{ myForm.get("username")?.errors | json }}</pre>
